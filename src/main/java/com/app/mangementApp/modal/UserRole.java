@@ -1,21 +1,22 @@
 package com.app.mangementApp.modal;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Data
+@Table(name = "user_role")
 public class UserRole {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "role_id", nullable = false)
+    private Long roleId;
 
-    @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private Role role;
+    @Column(name = "role_type")
+    private String roleTypes;
 
 }

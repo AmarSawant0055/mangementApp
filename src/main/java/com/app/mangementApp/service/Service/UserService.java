@@ -1,10 +1,34 @@
 package com.app.mangementApp.service.Service;
 
-import com.app.mangementApp.modal.User;
+import com.app.mangementApp.Dto.UserDto;
 
+import java.util.List;
+
+/**
+ * Project Name - Management Application
+ * <p>
+ * IDE Used - IntelliJ IDEA
+ *
+ * @author - Amar Sawant
+ * @since - 28-05-2024
+ */
 public interface UserService {
 
-    void save(User user);
+    String createNewUser(UserDto userDto);
 
-    User findByUsername(String username);
+    UserDto getUserByEmailAdd(String emailAdd);
+
+    List<UserDto> getAllTrainers();
+
+    List<UserDto> getAllAssociates();
+
+    List<UserDto> getAllPendingUsers();
+
+    Boolean approvePendingUser(String emailAdd);
+
+    Boolean declinePendingUser(String emailAdd);
+
+    List<UserDto> getAllAssociatesByStatus(String status);
+
+
 }
