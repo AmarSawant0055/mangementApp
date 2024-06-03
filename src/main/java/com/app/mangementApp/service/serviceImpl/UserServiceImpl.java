@@ -7,7 +7,9 @@ import com.app.mangementApp.constants.UserAccountStatusTypes;
 import com.app.mangementApp.constants.UserRoleTypes;
 import com.app.mangementApp.exceptions.ApplicationException;
 import com.app.mangementApp.modal.User;
+import com.app.mangementApp.modal.UserRole;
 import com.app.mangementApp.repository.UserRepository;
+import com.app.mangementApp.repository.UserRoleRepository;
 import com.app.mangementApp.service.Service.IUserRoleService;
 import com.app.mangementApp.service.Service.UserService;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
@@ -195,6 +201,22 @@ public class UserServiceImpl implements UserService {
         return yotaUserDto;
     }
 
+    @Override
+    public User updateUserRole(String emailAdd, Long userRoleId) {
+        Optional<User> userOptional = userRepository.findByEmailAdd(emailAdd);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Optional<UserRole> userRoleOptional = userRoleRepository.findById(userRoleId);
+            if (userRoleOptional.isPresent()) {
+                user.setUserRole(userRoleOptional.get());
+                return userRepository.save(user);
+            } else {
+                throw new RuntimeException("User role not found with id: " + userRoleId);
+            }
+        } else {
+            throw new RuntimeException("User not found with email: " + emailAdd);
+        }
+    }
 
 
 

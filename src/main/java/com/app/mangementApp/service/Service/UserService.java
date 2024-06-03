@@ -1,6 +1,7 @@
 package com.app.mangementApp.service.Service;
 
 import com.app.mangementApp.Dto.UserDto;
+import com.app.mangementApp.modal.User;
 
 import java.util.List;
 
@@ -29,6 +30,8 @@ public interface UserService {
     Boolean declinePendingUser(String emailAdd);
 
     List<UserDto> getAllAssociatesByStatus(String status);
+
+    public User updateUserRole(String emailAdd, Long userRoleId);
 
 
 }

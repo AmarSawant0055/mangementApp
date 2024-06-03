@@ -1,6 +1,8 @@
 package com.app.mangementApp.controller;
 
 import com.app.mangementApp.Dto.UserDto;
+import com.app.mangementApp.Dto.UserRoleUpdateDto;
+import com.app.mangementApp.modal.User;
 import com.app.mangementApp.service.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,6 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private UserService userService;
-
 
 
     @GetMapping("/get/all-teachers")
@@ -52,6 +53,10 @@ public class UsersController {
         List<UserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
         return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
     }
-
+    @PutMapping("/{emailAdd}/role")
+    public ResponseEntity<User> updateUserRole(@PathVariable String emailAdd, @RequestBody UserRoleUpdateDto userRoleUpdateDTO) {
+        User updatedUser = userService.updateUserRole(emailAdd, userRoleUpdateDTO.getUserRoleId());
+        return ResponseEntity.ok(updatedUser);
+    }
 
 }
