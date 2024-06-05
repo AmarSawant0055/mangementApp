@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 public class UserRoleUpdateDto {
 
     private Long userRoleId;
+
+    private String status;
 }
