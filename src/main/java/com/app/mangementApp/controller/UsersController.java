@@ -2,6 +2,7 @@ package com.app.mangementApp.controller;
 
 import com.app.mangementApp.Dto.UserDto;
 import com.app.mangementApp.Dto.UserRoleUpdateDto;
+import com.app.mangementApp.exceptions.ApplicationException;
 import com.app.mangementApp.modal.User;
 import com.app.mangementApp.service.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,11 @@ public class UsersController {
         List<UserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
         return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
     }
-    @PutMapping("/{emailAdd}/role")
-    public ResponseEntity<User> updateUserRole(@PathVariable String emailAdd, @RequestBody UserRoleUpdateDto userRoleUpdateDTO) {
-        User updatedUser = userService.updateUserRole(emailAdd, userRoleUpdateDTO.getUserRoleId());
+    @PutMapping("/{emailAddress}")
+    public ResponseEntity<User> updateAccountStatusAndRole(@PathVariable String emailAddress,
+                                                           @RequestBody UserRoleUpdateDto request) throws ApplicationException {
+
+        User updatedUser = userService.updateAccountStatusAndRole(emailAddress, request.getAccountStatus(), request.getUserRole());
         return ResponseEntity.ok(updatedUser);
     }
 

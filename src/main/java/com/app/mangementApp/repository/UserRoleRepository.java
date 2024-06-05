@@ -17,4 +17,6 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
     @Query("select ur from UserRole ur")
     Set<UserRole> getAllUserRoles();
 
+    UserRole findByRoleTypes(String roleTpes);
+
 }

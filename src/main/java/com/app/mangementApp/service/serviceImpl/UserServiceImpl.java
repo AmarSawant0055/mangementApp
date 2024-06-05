@@ -202,21 +202,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserRole(String emailAdd, Long userRoleId) {
-        Optional<User> userOptional = userRepository.findByEmailAdd(emailAdd);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Optional<UserRole> userRoleOptional = userRoleRepository.findById(userRoleId);
-            if (userRoleOptional.isPresent()) {
-                user.setUserRole(userRoleOptional.get());
-                return userRepository.save(user);
-            } else {
-                throw new RuntimeException("User role not found with id: " + userRoleId);
-            }
-        } else {
-            throw new RuntimeException("User not found with email: " + emailAdd);
-        }
+    public User updateAccountStatusAndRole(String emailAddress, UserAccountStatusTypes accountStatus, String userRole) throws ApplicationException {
+        User user = userRepository.findByEmailAdd(emailAddress)
+                .orElseThrow(() -> new ApplicationException("User with email address " + emailAddress + " not found"));
+
+        UserRole userRole1=userRoleRepository.findByRoleTypes(userRole);
+
+        user.setAccountStatus(accountStatus);
+        user.setUserRole(userRole1);
+
+        return userRepository.save(user);
     }
+
 
 
 

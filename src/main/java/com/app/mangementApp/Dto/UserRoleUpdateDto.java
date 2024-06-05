@@ -1,6 +1,8 @@
 package com.app.mangementApp.Dto;
 
 
+import com.app.mangementApp.constants.UserAccountStatusTypes;
+import com.app.mangementApp.modal.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserRoleUpdateDto {
 
-    private Long userRoleId;
-
-    private String status;
+    private UserAccountStatusTypes accountStatus;
+    private String userRole;
 }
