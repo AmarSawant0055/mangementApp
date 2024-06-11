@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class UserRoleUpdateDto {
 
     private UserAccountStatusTypes accountStatus;
-    private String userRole;
+    private String role;
 }

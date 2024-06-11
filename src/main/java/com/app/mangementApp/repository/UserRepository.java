@@ -20,8 +20,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("select yur from User yur where yur.accountStatus=com.app.mangementApp.constants.UserAccountStatusTypes.PENDING")
     List<User> getAllPendingUsers();
 
-    @Query("select yur from User yur where yur.userRole.roleTypes=?1")
-    List<User> findAllUsersByRole(String roleTypes);
+    @Query("select yur from User yur")
+    List<User> findAllUsersByRole();
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional

@@ -1,6 +1,7 @@
 package com.app.mangementApp.service.Service;
 
 import com.app.mangementApp.Dto.UserDto;
+import com.app.mangementApp.Dto.UserRoleUpdateDto;
 import com.app.mangementApp.constants.UserAccountStatusTypes;
 import com.app.mangementApp.modal.User;
 import com.app.mangementApp.modal.UserRole;
@@ -21,7 +22,6 @@ public interface UserService {
 
     UserDto getUserByEmailAdd(String emailAdd);
 
-    List<UserDto> getAllTrainers();
 
     List<UserDto> getAllAssociates();
 
@@ -33,7 +33,8 @@ public interface UserService {
 
     List<UserDto> getAllAssociatesByStatus(String status);
 
-    public User updateAccountStatusAndRole(String emailAddress, UserAccountStatusTypes accountStatus, String userRole);
+    public User updateAccountStatusAndRole(String emailAddress, UserRoleUpdateDto userRoleUpdateDto);
+    public void deleteUserByEmail(String email);
 
 
 }

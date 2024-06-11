@@ -2,6 +2,7 @@ package com.app.mangementApp.controller;
 
 import com.app.mangementApp.Dto.UserDto;
 import com.app.mangementApp.Dto.UserRoleUpdateDto;
+import com.app.mangementApp.constants.UserAccountStatusTypes;
 import com.app.mangementApp.exceptions.ApplicationException;
 import com.app.mangementApp.modal.User;
 import com.app.mangementApp.service.Service.UserService;
@@ -19,19 +20,13 @@ public class UsersController {
     private UserService userService;
 
 
-    @GetMapping("/get/all-teachers")
-    public ResponseEntity<List<UserDto>> getAllTrainers() {
-        List<UserDto> allTrainers = this.userService.getAllTrainers();
-        return new ResponseEntity<>(allTrainers, HttpStatus.OK);
-    }
-
     @GetMapping("/get/all-pending/associates")
     public ResponseEntity<List<UserDto>> getAllPendingAssociates() {
         List<UserDto> allPendingUsers = this.userService.getAllPendingUsers();
         return new ResponseEntity<>(allPendingUsers, HttpStatus.OK);
     }
 
-    @GetMapping("/get/all-associates")
+    @GetMapping("/get/all-users")
     public ResponseEntity<List<UserDto>> getAllAssociates() {
         List<UserDto> allStudents = this.userService.getAllAssociates();
         return new ResponseEntity<>(allStudents, HttpStatus.OK);
@@ -56,10 +51,22 @@ public class UsersController {
     }
     @PutMapping("/{emailAddress}")
     public ResponseEntity<User> updateAccountStatusAndRole(@PathVariable String emailAddress,
-                                                           @RequestBody UserRoleUpdateDto request) throws ApplicationException {
+                                                           @RequestBody UserRoleUpdateDto userRoleUpdateDto) throws ApplicationException {
 
-        User updatedUser = userService.updateAccountStatusAndRole(emailAddress, request.getAccountStatus(), request.getUserRole());
+        User updatedUser = userService.updateAccountStatusAndRole(emailAddress, userRoleUpdateDto);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email) {
+        try {
+            userService.deleteUserByEmail(email);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content
+        } catch (Exception e) {
+            // Log or handle the exception appropriately
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Internal Server Error
+        }
     }
 
 }

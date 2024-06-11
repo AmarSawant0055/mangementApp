@@ -2,6 +2,7 @@ package com.app.mangementApp.service.serviceImpl;
 
 import com.app.mangementApp.Dto.UserDto;
 import com.app.mangementApp.Dto.UserRoleDto;
+import com.app.mangementApp.Dto.UserRoleUpdateDto;
 import com.app.mangementApp.constants.AppConstants;
 import com.app.mangementApp.constants.UserAccountStatusTypes;
 import com.app.mangementApp.constants.UserRoleTypes;
@@ -114,23 +115,11 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    @Override
-    public List<UserDto> getAllTrainers() {
-        List<User> allTrainers = this.userRepository.findAllUsersByRole(UserRoleTypes.ROLE_TEACHER.toString());
-        if (!allTrainers.isEmpty()) {
-            return allTrainers
-                    .stream()
-                    .map(yur -> this
-                            .modelMapper
-                            .map(yur, UserDto.class))
-                    .collect(Collectors.toList());
-        } else
-            throw new ApplicationException("No Trainers found !");
-    }
+
 
     @Override
     public List<UserDto> getAllAssociates() {
-        List<User> allTrainers = this.userRepository.findAllUsersByRole(UserRoleTypes.ROLE_ASSOCIATE.toString());
+        List<User> allTrainers = this.userRepository.findAllUsersByRole();
         if (!allTrainers.isEmpty()) {
             return allTrainers
                     .stream()
@@ -202,16 +191,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateAccountStatusAndRole(String emailAddress, UserAccountStatusTypes accountStatus, String userRole) throws ApplicationException {
+    public User updateAccountStatusAndRole(String emailAddress, UserRoleUpdateDto userRoleUpdateDto) throws ApplicationException {
+
         User user = userRepository.findByEmailAdd(emailAddress)
                 .orElseThrow(() -> new ApplicationException("User with email address " + emailAddress + " not found"));
 
-        UserRole userRole1=userRoleRepository.findByRoleTypes(userRole);
 
-        user.setAccountStatus(accountStatus);
+        user.setAccountStatus(userRoleUpdateDto.getAccountStatus());
+        UserRole userRole1=userRoleRepository.findByRoleTypes(userRoleUpdateDto.getRole());
+
+
         user.setUserRole(userRole1);
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUserByEmail(String email) {
+        User user = userRepository.findByEmailAdd(email)
+                .orElseThrow(() -> new ApplicationException("User with email address " + email + " not found"));
+
+            userRepository.delete(user);
+
     }
 
 
